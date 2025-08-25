@@ -1,0 +1,928 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ikigai Journal - Discover Your Life's Purpose</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        cream: {
+                            50: '#FAF7F2',
+                            100: '#F5F1E8',
+                            200: '#EDE6D3',
+                            300: '#E3D7BE'
+                        },
+                        earth: {
+                            700: '#8B6F47',
+                            800: '#6B5537',
+                            900: '#2C2825'
+                        },
+                        coral: {
+                            400: '#D4A574',
+                            500: '#C8956D'
+                        },
+                        sage: {
+                            400: '#9CAF88',
+                            500: '#7A9A65'
+                        }
+                    },
+                    fontFamily: {
+                        'serif': ['Playfair Display', 'serif'],
+                        'sans': ['Inter', 'sans-serif'],
+                        'georgia': ['Georgia', 'serif']
+                    }
+                }
+            }
+        };
+    </script>
+</head>
+<body class="bg-cream-50 font-sans text-earth-900 min-h-screen">
+    <!-- @COMPONENT: IkigaiJournal [main journal application] -->
+    <div class="min-h-screen">
+        <!-- Header Section -->
+        <header class="bg-cream-100 border-b border-cream-200 sticky top-0 z-50">
+            <div class="max-w-4xl mx-auto px-4 py-6">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <h1 class="font-serif text-2xl md:text-3xl font-bold text-earth-900">Ikigai Journal</h1>
+                        <p class="text-earth-700 text-sm mt-1">Discover your life's purpose through guided reflection</p>
+                    </div>
+                    <div class="text-right">
+                        <div class="text-xs text-earth-700 mb-1">Progress</div>
+                        <!-- @STATE: currentStep:number = 1, totalSteps:number = 5 -->
+                        <div class="flex items-center space-x-2">
+                            <span class="text-sm font-medium text-earth-800" data-bind="currentStep">1</span>
+                            <span class="text-xs text-earth-600">of</span>
+                            <span class="text-sm font-medium text-earth-800">5</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Progress Bar -->
+                <div class="mt-4">
+                    <div class="w-full bg-cream-200 rounded-full h-2">
+                        <div class="bg-coral-500 h-2 rounded-full transition-all duration-500 ease-out" 
+                             style="width: 20%" data-bind="(currentStep / totalSteps) * 100%"></div>
+                    </div>
+                    <div class="flex justify-between mt-2 text-xs text-earth-600">
+                        <span>Start</span>
+                        <span>Complete</span>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="max-w-4xl mx-auto px-4 py-8">
+            <!-- Welcome Screen -->
+            <!-- @STATE: showWelcome:boolean = true -->
+            <div id="welcome-screen" class="text-center max-w-2xl mx-auto">
+                <div class="mb-8">
+                    <!-- Japanese-inspired circular design element -->
+                    <div class="w-32 h-32 mx-auto bg-gradient-to-br from-coral-400 to-sage-400 rounded-full flex items-center justify-center mb-6 shadow-lg">
+                        <i class="fas fa-heart text-3xl text-white"></i>
+                    </div>
+                    <h2 class="font-serif text-4xl md:text-5xl font-bold text-earth-900 mb-4">Find Your Ikigai</h2>
+                    <p class="text-lg text-earth-700 leading-relaxed mb-6">
+                        Ikigai is your reason for being—the sweet spot where what you love, what you're good at, 
+                        what the world needs, and what you can be paid for all come together.
+                    </p>
+                    <div class="bg-cream-100 rounded-xl p-6 mb-8 border border-cream-200">
+                        <p class="text-earth-800 font-georgia italic text-lg">
+                            "Only staying active will make you want to live a hundred years."
+                        </p>
+                        <p class="text-earth-600 text-sm mt-2">— Japanese Proverb</p>
+                    </div>
+                </div>
+                
+                <button class="bg-coral-500 hover:bg-coral-400 text-white px-8 py-4 rounded-xl font-medium text-lg transition-colors duration-200 shadow-lg hover:shadow-xl"
+                        data-event="click:startJourney">
+                    Begin Your Journey
+                    <i class="fas fa-arrow-right ml-2"></i>
+                </button>
+            </div>
+
+            <!-- Step 1: Rediscover the things you love -->
+            <!-- @STATE: currentStep:number, responses:object -->
+            <div id="step-1" class="hidden">
+                <div class="max-w-3xl mx-auto">
+                    <div class="bg-white rounded-2xl shadow-lg border border-cream-200 overflow-hidden">
+                        <div class="bg-gradient-to-r from-coral-400 to-coral-500 px-6 py-8 text-white">
+                            <div class="flex items-center space-x-3 mb-3">
+                                <div class="w-8 h-8 bg-white bg-opacity-20 rounded-full flex items-center justify-center">
+                                    <span class="font-bold text-sm">1</span>
+                                </div>
+                                <span class="text-sm font-medium opacity-90">Step One</span>
+                            </div>
+                            <h2 class="font-serif text-3xl font-bold">Rediscover the things you love</h2>
+                            <p class="mt-3 text-coral-50 text-lg">
+                                Finding your Ikigai is a process of discovery. Let's start by exploring what truly brings you joy.
+                            </p>
+                        </div>
+                        
+                        <div class="p-6 md:p-8">
+                            <div class="prose prose-earth max-w-none mb-8">
+                                <p class="text-earth-700 leading-relaxed">
+                                    Passion fuels motivation and drive. If you're not passionate about something, chances are you'll get bored easily. 
+                                    <strong>So do not skip this step</strong> — brainstorm the activities you love doing first, and then the rest will fall into place.
+                                </p>
+                            </div>
+
+                            <!-- Journal Prompts -->
+                            <div class="space-y-6">
+                                <h3 class="font-serif text-xl font-semibold text-earth-800 border-b border-cream-200 pb-2">Journal Prompts</h3>
+                                
+                                <!-- Prompt 1 -->
+                                <div class="border border-cream-200 rounded-xl p-5 bg-cream-50">
+                                    <label class="block font-georgia text-earth-800 mb-3 font-medium">
+                                        What activities or hobbies bring you genuine joy?
+                                    </label>
+                                    <textarea class="w-full p-4 border border-cream-300 rounded-lg resize-none focus:ring-2 focus:ring-coral-400 focus:border-transparent transition-all"
+                                              rows="4" 
+                                              placeholder="Take your time to reflect... What makes your heart sing?"
+                                              data-bind="responses.step1.prompt1"></textarea>
+                                </div>
+
+                                <!-- Prompt 2 -->
+                                <div class="border border-cream-200 rounded-xl p-5 bg-cream-50">
+                                    <label class="block font-georgia text-earth-800 mb-3 font-medium">
+                                        What do you love doing in your free time?
+                                    </label>
+                                    <textarea class="w-full p-4 border border-cream-300 rounded-lg resize-none focus:ring-2 focus:ring-coral-400 focus:border-transparent transition-all"
+                                              rows="4" 
+                                              placeholder="When you have complete freedom, what do you gravitate towards?"
+                                              data-bind="responses.step1.prompt2"></textarea>
+                                </div>
+
+                                <!-- Prompt 3 -->
+                                <div class="border border-cream-200 rounded-xl p-5 bg-cream-50">
+                                    <label class="block font-georgia text-earth-800 mb-3 font-medium">
+                                        What makes you lose track of the minutes and hours?
+                                    </label>
+                                    <textarea class="w-full p-4 border border-cream-300 rounded-lg resize-none focus:ring-2 focus:ring-coral-400 focus:border-transparent transition-all"
+                                              rows="4" 
+                                              placeholder="Think about times when you were completely absorbed in an activity..."
+                                              data-bind="responses.step1.prompt3"></textarea>
+                                </div>
+
+                                <!-- Prompt 4 -->
+                                <div class="border border-cream-200 rounded-xl p-5 bg-cream-50">
+                                    <label class="block font-georgia text-earth-800 mb-3 font-medium">
+                                        Reflect on your most satisfying and fulfilling moments. What were you doing?
+                                    </label>
+                                    <textarea class="w-full p-4 border border-cream-300 rounded-lg resize-none focus:ring-2 focus:ring-coral-400 focus:border-transparent transition-all"
+                                              rows="4" 
+                                              placeholder="Remember specific moments when you felt deeply fulfilled..."
+                                              data-bind="responses.step1.prompt4"></textarea>
+                                </div>
+
+                                <!-- Prompt 5 -->
+                                <div class="border border-cream-200 rounded-xl p-5 bg-cream-50">
+                                    <label class="block font-georgia text-earth-800 mb-3 font-medium">
+                                        What activities would you like to pursue if money wasn't an object?
+                                    </label>
+                                    <textarea class="w-full p-4 border border-cream-300 rounded-lg resize-none focus:ring-2 focus:ring-coral-400 focus:border-transparent transition-all"
+                                              rows="4" 
+                                              placeholder="Remove all financial constraints - what would you do with your time?"
+                                              data-bind="responses.step1.prompt5"></textarea>
+                                </div>
+                            </div>
+
+                            <!-- Navigation -->
+                            <div class="flex justify-between mt-8 pt-6 border-t border-cream-200">
+                                <button class="px-6 py-3 text-earth-600 hover:text-earth-800 transition-colors font-medium"
+                                        data-event="click:goToWelcome">
+                                    <i class="fas fa-arrow-left mr-2"></i>
+                                    Back
+                                </button>
+                                <button class="bg-coral-500 hover:bg-coral-400 text-white px-6 py-3 rounded-lg font-medium transition-colors shadow-lg"
+                                        data-event="click:nextStep">
+                                    Continue
+                                    <i class="fas fa-arrow-right ml-2"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Step 2: Identify your natural strengths and skills -->
+            <div id="step-2" class="hidden">
+                <div class="max-w-3xl mx-auto">
+                    <div class="bg-white rounded-2xl shadow-lg border border-cream-200 overflow-hidden">
+                        <div class="bg-gradient-to-r from-sage-400 to-sage-500 px-6 py-8 text-white">
+                            <div class="flex items-center space-x-3 mb-3">
+                                <div class="w-8 h-8 bg-white bg-opacity-20 rounded-full flex items-center justify-center">
+                                    <span class="font-bold text-sm">2</span>
+                                </div>
+                                <span class="text-sm font-medium opacity-90">Step Two</span>
+                            </div>
+                            <h2 class="font-serif text-3xl font-bold">Identify your natural strengths and skills</h2>
+                            <p class="mt-3 text-sage-50 text-lg">
+                                When you lean into your natural strengths, you gain the confidence you need to achieve more.
+                            </p>
+                        </div>
+                        
+                        <div class="p-6 md:p-8">
+                            <div class="prose prose-earth max-w-none mb-8">
+                                <p class="text-earth-700 leading-relaxed">
+                                    By focusing on your inherent skills and expertise, you empower yourself to grow and thrive. 
+                                    You have the confidence to push yourself out of your comfort zone to find <em>real</em> purpose.
+                                </p>
+                            </div>
+
+                            <!-- Journal Prompts -->
+                            <div class="space-y-6">
+                                <h3 class="font-serif text-xl font-semibold text-earth-800 border-b border-cream-200 pb-2">Journal Prompts</h3>
+                                
+                                <!-- Prompt 1 -->
+                                <div class="border border-cream-200 rounded-xl p-5 bg-cream-50">
+                                    <label class="block font-georgia text-earth-800 mb-3 font-medium">
+                                        What are you really good at? What comes naturally to you?
+                                    </label>
+                                    <textarea class="w-full p-4 border border-cream-300 rounded-lg resize-none focus:ring-2 focus:ring-sage-400 focus:border-transparent transition-all"
+                                              rows="4" 
+                                              placeholder="Think about things you do with ease that others find challenging..."
+                                              data-bind="responses.step2.prompt1"></textarea>
+                                </div>
+
+                                <!-- Prompt 2 -->
+                                <div class="border border-cream-200 rounded-xl p-5 bg-cream-50">
+                                    <label class="block font-georgia text-earth-800 mb-3 font-medium">
+                                        What skills do you have that many others do not?
+                                    </label>
+                                    <textarea class="w-full p-4 border border-cream-300 rounded-lg resize-none focus:ring-2 focus:ring-sage-400 focus:border-transparent transition-all"
+                                              rows="4" 
+                                              placeholder="Consider your unique abilities and talents..."
+                                              data-bind="responses.step2.prompt2"></textarea>
+                                </div>
+
+                                <!-- Prompt 3 -->
+                                <div class="border border-cream-200 rounded-xl p-5 bg-cream-50">
+                                    <label class="block font-georgia text-earth-800 mb-3 font-medium">
+                                        What skill(s) have you been spending time to practice?
+                                    </label>
+                                    <textarea class="w-full p-4 border border-cream-300 rounded-lg resize-none focus:ring-2 focus:ring-sage-400 focus:border-transparent transition-all"
+                                              rows="4" 
+                                              placeholder="What skills are you actively developing and improving?"
+                                              data-bind="responses.step2.prompt3"></textarea>
+                                </div>
+
+                                <!-- Prompt 4 -->
+                                <div class="border border-cream-200 rounded-xl p-5 bg-cream-50">
+                                    <label class="block font-georgia text-earth-800 mb-3 font-medium">
+                                        What do people look to you for help with?
+                                    </label>
+                                    <textarea class="w-full p-4 border border-cream-300 rounded-lg resize-none focus:ring-2 focus:ring-sage-400 focus:border-transparent transition-all"
+                                              rows="4" 
+                                              placeholder="What do friends, family, or colleagues often ask you about?"
+                                              data-bind="responses.step2.prompt4"></textarea>
+                                </div>
+
+                                <!-- Prompt 5 -->
+                                <div class="border border-cream-200 rounded-xl p-5 bg-cream-50">
+                                    <label class="block font-georgia text-earth-800 mb-3 font-medium">
+                                        What are your strengths? List at least 8
+                                    </label>
+                                    <textarea class="w-full p-4 border border-cream-300 rounded-lg resize-none focus:ring-2 focus:ring-sage-400 focus:border-transparent transition-all"
+                                              rows="4" 
+                                              placeholder="Don't be modest - really dig deep and list your strengths..."
+                                              data-bind="responses.step2.prompt5"></textarea>
+                                </div>
+                            </div>
+
+                            <!-- Navigation -->
+                            <div class="flex justify-between mt-8 pt-6 border-t border-cream-200">
+                                <button class="px-6 py-3 text-earth-600 hover:text-earth-800 transition-colors font-medium"
+                                        data-event="click:previousStep">
+                                    <i class="fas fa-arrow-left mr-2"></i>
+                                    Previous
+                                </button>
+                                <button class="bg-sage-500 hover:bg-sage-400 text-white px-6 py-3 rounded-lg font-medium transition-colors shadow-lg"
+                                        data-event="click:nextStep">
+                                    Continue
+                                    <i class="fas fa-arrow-right ml-2"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Step 3: Align your interests and skills with what the world needs -->
+            <div id="step-3" class="hidden">
+                <div class="max-w-3xl mx-auto">
+                    <div class="bg-white rounded-2xl shadow-lg border border-cream-200 overflow-hidden">
+                        <div class="bg-gradient-to-r from-earth-700 to-earth-800 px-6 py-8 text-white">
+                            <div class="flex items-center space-x-3 mb-3">
+                                <div class="w-8 h-8 bg-white bg-opacity-20 rounded-full flex items-center justify-center">
+                                    <span class="font-bold text-sm">3</span>
+                                </div>
+                                <span class="text-sm font-medium opacity-90">Step Three</span>
+                            </div>
+                            <h2 class="font-serif text-3xl font-bold">Align your interests and skills with what the world needs</h2>
+                            <p class="mt-3 text-cream-100 text-lg">
+                                You are two steps away from creating a purpose-driven life! How does that feel?
+                            </p>
+                        </div>
+                        
+                        <div class="p-6 md:p-8">
+                            <div class="prose prose-earth max-w-none mb-8">
+                                <p class="text-earth-700 leading-relaxed">
+                                    To find your <em>real</em> purpose, you need to be completely open and honest with yourself. 
+                                    Don't write down what you think you should be writing down. Dive deep inside yourself and write down those core passions, skills and desires.
+                                </p>
+                            </div>
+
+                            <!-- Journal Prompts -->
+                            <div class="space-y-6">
+                                <h3 class="font-serif text-xl font-semibold text-earth-800 border-b border-cream-200 pb-2">Journal Prompts</h3>
+                                
+                                <!-- Prompt 1 -->
+                                <div class="border border-cream-200 rounded-xl p-5 bg-cream-50">
+                                    <label class="block font-georgia text-earth-800 mb-3 font-medium">
+                                        What industry or market can benefit from your skills?
+                                    </label>
+                                    <textarea class="w-full p-4 border border-cream-300 rounded-lg resize-none focus:ring-2 focus:ring-earth-700 focus:border-transparent transition-all"
+                                              rows="4" 
+                                              placeholder="Consider where your skills could make the biggest impact..."
+                                              data-bind="responses.step3.prompt1"></textarea>
+                                </div>
+
+                                <!-- Prompt 2 -->
+                                <div class="border border-cream-200 rounded-xl p-5 bg-cream-50">
+                                    <label class="block font-georgia text-earth-800 mb-3 font-medium">
+                                        What specific challenges is this industry or market currently facing?
+                                    </label>
+                                    <textarea class="w-full p-4 border border-cream-300 rounded-lg resize-none focus:ring-2 focus:ring-earth-700 focus:border-transparent transition-all"
+                                              rows="4" 
+                                              placeholder="Think about problems you've noticed or heard about..."
+                                              data-bind="responses.step3.prompt2"></textarea>
+                                </div>
+
+                                <!-- Prompt 3 -->
+                                <div class="border border-cream-200 rounded-xl p-5 bg-cream-50">
+                                    <label class="block font-georgia text-earth-800 mb-3 font-medium">
+                                        What problems or needs can you solve with your skills?
+                                    </label>
+                                    <textarea class="w-full p-4 border border-cream-300 rounded-lg resize-none focus:ring-2 focus:ring-earth-700 focus:border-transparent transition-all"
+                                              rows="4" 
+                                              placeholder="Be specific about how your abilities can address these challenges..."
+                                              data-bind="responses.step3.prompt3"></textarea>
+                                </div>
+
+                                <!-- Prompt 4 -->
+                                <div class="border border-cream-200 rounded-xl p-5 bg-cream-50">
+                                    <label class="block font-georgia text-earth-800 mb-3 font-medium">
+                                        How do your passions and interests align with the needs of this market or industry?
+                                    </label>
+                                    <textarea class="w-full p-4 border border-cream-300 rounded-lg resize-none focus:ring-2 focus:ring-earth-700 focus:border-transparent transition-all"
+                                              rows="4" 
+                                              placeholder="Find the connection between what you love and what's needed..."
+                                              data-bind="responses.step3.prompt4"></textarea>
+                                </div>
+
+                                <!-- Prompt 5 -->
+                                <div class="border border-cream-200 rounded-xl p-5 bg-cream-50">
+                                    <label class="block font-georgia text-earth-800 mb-3 font-medium">
+                                        How can you specifically leave a positive impact on this industry or market?
+                                    </label>
+                                    <textarea class="w-full p-4 border border-cream-300 rounded-lg resize-none focus:ring-2 focus:ring-earth-700 focus:border-transparent transition-all"
+                                              rows="4" 
+                                              placeholder="Envision the change you could create..."
+                                              data-bind="responses.step3.prompt5"></textarea>
+                                </div>
+                            </div>
+
+                            <!-- Navigation -->
+                            <div class="flex justify-between mt-8 pt-6 border-t border-cream-200">
+                                <button class="px-6 py-3 text-earth-600 hover:text-earth-800 transition-colors font-medium"
+                                        data-event="click:previousStep">
+                                    <i class="fas fa-arrow-left mr-2"></i>
+                                    Previous
+                                </button>
+                                <button class="bg-earth-700 hover:bg-earth-600 text-white px-6 py-3 rounded-lg font-medium transition-colors shadow-lg"
+                                        data-event="click:nextStep">
+                                    Continue
+                                    <i class="fas fa-arrow-right ml-2"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Step 4: Explore ways to get paid -->
+            <div id="step-4" class="hidden">
+                <div class="max-w-3xl mx-auto">
+                    <div class="bg-white rounded-2xl shadow-lg border border-cream-200 overflow-hidden">
+                        <div class="bg-gradient-to-r from-coral-500 to-earth-700 px-6 py-8 text-white">
+                            <div class="flex items-center space-x-3 mb-3">
+                                <div class="w-8 h-8 bg-white bg-opacity-20 rounded-full flex items-center justify-center">
+                                    <span class="font-bold text-sm">4</span>
+                                </div>
+                                <span class="text-sm font-medium opacity-90">Step Four</span>
+                            </div>
+                            <h2 class="font-serif text-3xl font-bold">Explore ways to get paid for what you love, skills and value</h2>
+                            <p class="mt-3 text-cream-100 text-lg">
+                                Having money simply makes life easier and opens up a world of opportunities and possibilities.
+                            </p>
+                        </div>
+                        
+                        <div class="p-6 md:p-8">
+                            <div class="prose prose-earth max-w-none mb-8">
+                                <p class="text-earth-700 leading-relaxed">
+                                    So if you can get paid for your purpose, then you're basically winning at life, right? 
+                                    That's why this next step is essential — explore how you can get paid for what you love, your skills and your value to the world.
+                                </p>
+                                <div class="bg-coral-50 border border-coral-200 rounded-lg p-4 mt-4">
+                                    <p class="text-coral-800 font-medium">
+                                        <strong>Hot take:</strong> Getting paid for your interests and skills might not necessarily be limited to typical job roles. 
+                                        It might allow you to venture out on your own and create a business or side hustle.
+                                    </p>
+                                </div>
+                            </div>
+
+                            <!-- Journal Prompts -->
+                            <div class="space-y-6">
+                                <h3 class="font-serif text-xl font-semibold text-earth-800 border-b border-cream-200 pb-2">Journal Prompts</h3>
+                                
+                                <!-- Prompt 1 -->
+                                <div class="border border-cream-200 rounded-xl p-5 bg-cream-50">
+                                    <label class="block font-georgia text-earth-800 mb-3 font-medium">
+                                        What skills do you have that are in high demand?
+                                    </label>
+                                    <textarea class="w-full p-4 border border-cream-300 rounded-lg resize-none focus:ring-2 focus:ring-coral-400 focus:border-transparent transition-all"
+                                              rows="4" 
+                                              placeholder="Think about skills that people are actively seeking and willing to pay for..."
+                                              data-bind="responses.step4.prompt1"></textarea>
+                                </div>
+
+                                <!-- Prompt 2 -->
+                                <div class="border border-cream-200 rounded-xl p-5 bg-cream-50">
+                                    <label class="block font-georgia text-earth-800 mb-3 font-medium">
+                                        How can you leverage your interests to provide value to others and make money?
+                                    </label>
+                                    <textarea class="w-full p-4 border border-cream-300 rounded-lg resize-none focus:ring-2 focus:ring-coral-400 focus:border-transparent transition-all"
+                                              rows="4" 
+                                              placeholder="Consider how your passions could solve problems or fulfill needs..."
+                                              data-bind="responses.step4.prompt2"></textarea>
+                                </div>
+
+                                <!-- Prompt 3 -->
+                                <div class="border border-cream-200 rounded-xl p-5 bg-cream-50">
+                                    <label class="block font-georgia text-earth-800 mb-3 font-medium">
+                                        What industry or target market would benefit from your interests and skills?
+                                    </label>
+                                    <textarea class="w-full p-4 border border-cream-300 rounded-lg resize-none focus:ring-2 focus:ring-coral-400 focus:border-transparent transition-all"
+                                              rows="4" 
+                                              placeholder="Identify specific groups of people who would pay for what you offer..."
+                                              data-bind="responses.step4.prompt3"></textarea>
+                                </div>
+
+                                <!-- Prompt 4 -->
+                                <div class="border border-cream-200 rounded-xl p-5 bg-cream-50">
+                                    <label class="block font-georgia text-earth-800 mb-3 font-medium">
+                                        What job opportunities align with your interests and skills?
+                                    </label>
+                                    <textarea class="w-full p-4 border border-cream-300 rounded-lg resize-none focus:ring-2 focus:ring-coral-400 focus:border-transparent transition-all"
+                                              rows="4" 
+                                              placeholder="Research specific roles, companies, or career paths..."
+                                              data-bind="responses.step4.prompt4"></textarea>
+                                </div>
+
+                                <!-- Prompt 5 -->
+                                <div class="border border-cream-200 rounded-xl p-5 bg-cream-50">
+                                    <label class="block font-georgia text-earth-800 mb-3 font-medium">
+                                        How can you level up your skills to stay relevant and in demand?
+                                    </label>
+                                    <textarea class="w-full p-4 border border-cream-300 rounded-lg resize-none focus:ring-2 focus:ring-coral-400 focus:border-transparent transition-all"
+                                              rows="4" 
+                                              placeholder="What additional learning or development would increase your value?"
+                                              data-bind="responses.step4.prompt5"></textarea>
+                                </div>
+                            </div>
+
+                            <!-- Navigation -->
+                            <div class="flex justify-between mt-8 pt-6 border-t border-cream-200">
+                                <button class="px-6 py-3 text-earth-600 hover:text-earth-800 transition-colors font-medium"
+                                        data-event="click:previousStep">
+                                    <i class="fas fa-arrow-left mr-2"></i>
+                                    Previous
+                                </button>
+                                <button class="bg-coral-500 hover:bg-coral-400 text-white px-6 py-3 rounded-lg font-medium transition-colors shadow-lg"
+                                        data-event="click:nextStep">
+                                    Continue
+                                    <i class="fas fa-arrow-right ml-2"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Step 5: Find the overlap -->
+            <div id="step-5" class="hidden">
+                <div class="max-w-3xl mx-auto">
+                    <div class="bg-white rounded-2xl shadow-lg border border-cream-200 overflow-hidden">
+                        <div class="bg-gradient-to-r from-sage-500 via-coral-500 to-earth-700 px-6 py-8 text-white">
+                            <div class="flex items-center space-x-3 mb-3">
+                                <div class="w-8 h-8 bg-white bg-opacity-20 rounded-full flex items-center justify-center">
+                                    <span class="font-bold text-sm">5</span>
+                                </div>
+                                <span class="text-sm font-medium opacity-90">Final Step</span>
+                            </div>
+                            <h2 class="font-serif text-3xl font-bold">Find the overlap: Your Ikigai</h2>
+                            <p class="mt-3 text-cream-100 text-lg">
+                                This is where everything comes together. You're looking for the sweet spot—your reason for being.
+                            </p>
+                        </div>
+                        
+                        <div class="p-6 md:p-8">
+                            <div class="prose prose-earth max-w-none mb-8">
+                                <p class="text-earth-700 leading-relaxed">
+                                    Once you've completed the above 4 steps, you'll hopefully discover that there's an overlap between all these areas. 
+                                    <strong>Overlap is good.</strong> These overlaps are where you want to hang out for a while, as this is the step where everything comes together.
+                                </p>
+                            </div>
+
+                            <!-- Ikigai Diagram -->
+                            <div class="bg-gradient-to-br from-cream-100 to-cream-200 rounded-2xl p-8 mb-8 text-center">
+                                <h3 class="font-serif text-2xl font-semibold text-earth-800 mb-6">Your Ikigai Framework</h3>
+                                <div class="grid grid-cols-2 gap-4 mb-6">
+                                    <div class="bg-coral-100 border-2 border-coral-300 rounded-xl p-4">
+                                        <div class="w-3 h-3 bg-coral-500 rounded-full mx-auto mb-2"></div>
+                                        <h4 class="font-medium text-coral-800">Passion</h4>
+                                        <p class="text-xs text-coral-600 mt-1">Love + Good At</p>
+                                    </div>
+                                    <div class="bg-sage-100 border-2 border-sage-300 rounded-xl p-4">
+                                        <div class="w-3 h-3 bg-sage-500 rounded-full mx-auto mb-2"></div>
+                                        <h4 class="font-medium text-sage-800">Profession</h4>
+                                        <p class="text-xs text-sage-600 mt-1">Good At + Paid For</p>
+                                    </div>
+                                    <div class="bg-earth-100 border-2 border-earth-300 rounded-xl p-4">
+                                        <div class="w-3 h-3 bg-earth-600 rounded-full mx-auto mb-2"></div>
+                                        <h4 class="font-medium text-earth-800">Mission</h4>
+                                        <p class="text-xs text-earth-600 mt-1">Love + World Needs</p>
+                                    </div>
+                                    <div class="bg-cream-300 border-2 border-cream-400 rounded-xl p-4">
+                                        <div class="w-3 h-3 bg-cream-600 rounded-full mx-auto mb-2"></div>
+                                        <h4 class="font-medium text-cream-800">Vocation</h4>
+                                        <p class="text-xs text-cream-600 mt-1">World Needs + Paid For</p>
+                                    </div>
+                                </div>
+                                <div class="bg-white border-4 border-dashed border-coral-400 rounded-xl p-6">
+                                    <i class="fas fa-heart text-3xl text-coral-500 mb-2"></i>
+                                    <h4 class="font-serif text-xl font-bold text-earth-800">Your Ikigai</h4>
+                                    <p class="text-sm text-earth-600">The intersection of all four areas</p>
+                                </div>
+                            </div>
+
+                            <!-- Reflection Questions -->
+                            <div class="space-y-6">
+                                <h3 class="font-serif text-xl font-semibold text-earth-800 border-b border-cream-200 pb-2">Final Reflection</h3>
+                                
+                                <!-- Final Prompt -->
+                                <div class="border border-cream-200 rounded-xl p-5 bg-cream-50">
+                                    <label class="block font-georgia text-earth-800 mb-3 font-medium">
+                                        Looking at all your responses, what emerges as the common thread? What is your Ikigai?
+                                    </label>
+                                    <textarea class="w-full p-4 border border-cream-300 rounded-lg resize-none focus:ring-2 focus:ring-coral-400 focus:border-transparent transition-all"
+                                              rows="6" 
+                                              placeholder="Take your time to synthesize everything you've discovered about yourself. What patterns do you see? What excites you most?"
+                                              data-bind="responses.step5.ikigai"></textarea>
+                                </div>
+                            </div>
+
+                            <!-- Navigation -->
+                            <div class="flex justify-between mt-8 pt-6 border-t border-cream-200">
+                                <button class="px-6 py-3 text-earth-600 hover:text-earth-800 transition-colors font-medium"
+                                        data-event="click:previousStep">
+                                    <i class="fas fa-arrow-left mr-2"></i>
+                                    Previous
+                                </button>
+                                <button class="bg-gradient-to-r from-sage-500 to-coral-500 hover:from-sage-400 hover:to-coral-400 text-white px-8 py-3 rounded-lg font-medium transition-all shadow-lg"
+                                        data-event="click:completeJourney">
+                                    Complete Journey
+                                    <i class="fas fa-check ml-2"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Summary/Review Screen -->
+            <div id="summary-screen" class="hidden">
+                <div class="max-w-4xl mx-auto">
+                    <div class="text-center mb-12">
+                        <div class="w-24 h-24 mx-auto bg-gradient-to-br from-coral-400 to-sage-400 rounded-full flex items-center justify-center mb-6 shadow-xl">
+                            <i class="fas fa-trophy text-3xl text-white"></i>
+                        </div>
+                        <h2 class="font-serif text-4xl md:text-5xl font-bold text-earth-900 mb-4">Congratulations!</h2>
+                        <p class="text-xl text-earth-700">You've completed your Ikigai journey. Here's what you discovered:</p>
+                    </div>
+
+                    <!-- Summary Cards -->
+                    <div class="grid md:grid-cols-2 gap-6 mb-12">
+                        <div class="bg-coral-50 border border-coral-200 rounded-xl p-6">
+                            <h3 class="font-serif text-xl font-semibold text-coral-800 mb-3 flex items-center">
+                                <i class="fas fa-heart mr-3 text-coral-600"></i>
+                                What You Love
+                            </h3>
+                            <div class="text-earth-700" data-bind="summaryData.loves">
+                                <!-- Summary of step 1 responses -->
+                            </div>
+                        </div>
+                        
+                        <div class="bg-sage-50 border border-sage-200 rounded-xl p-6">
+                            <h3 class="font-serif text-xl font-semibold text-sage-800 mb-3 flex items-center">
+                                <i class="fas fa-star mr-3 text-sage-600"></i>
+                                What You're Good At
+                            </h3>
+                            <div class="text-earth-700" data-bind="summaryData.skills">
+                                <!-- Summary of step 2 responses -->
+                            </div>
+                        </div>
+                        
+                        <div class="bg-earth-50 border border-earth-200 rounded-xl p-6">
+                            <h3 class="font-serif text-xl font-semibold text-earth-800 mb-3 flex items-center">
+                                <i class="fas fa-globe mr-3 text-earth-600"></i>
+                                What The World Needs
+                            </h3>
+                            <div class="text-earth-700" data-bind="summaryData.worldNeeds">
+                                <!-- Summary of step 3 responses -->
+                            </div>
+                        </div>
+                        
+                        <div class="bg-cream-200 border border-cream-300 rounded-xl p-6">
+                            <h3 class="font-serif text-xl font-semibold text-cream-800 mb-3 flex items-center">
+                                <i class="fas fa-dollar-sign mr-3 text-cream-600"></i>
+                                What You Can Be Paid For
+                            </h3>
+                            <div class="text-earth-700" data-bind="summaryData.paidFor">
+                                <!-- Summary of step 4 responses -->
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Your Ikigai -->
+                    <div class="bg-gradient-to-br from-cream-100 to-cream-200 border-4 border-dashed border-coral-400 rounded-2xl p-8 text-center mb-12">
+                        <i class="fas fa-heart text-4xl text-coral-500 mb-4"></i>
+                        <h3 class="font-serif text-3xl font-bold text-earth-900 mb-4">Your Ikigai</h3>
+                        <div class="bg-white rounded-xl p-6 mx-auto max-w-2xl shadow-lg">
+                            <p class="text-earth-800 text-lg leading-relaxed" data-bind="responses.step5.ikigai">
+                                Your discovered purpose will appear here...
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Next Steps -->
+                    <div class="bg-white rounded-2xl shadow-lg border border-cream-200 p-8">
+                        <h3 class="font-serif text-2xl font-semibold text-earth-800 mb-6 text-center">What's Next?</h3>
+                        <div class="prose prose-earth max-w-none">
+                            <ul class="space-y-3 text-earth-700">
+                                <li class="flex items-start">
+                                    <i class="fas fa-check-circle text-coral-500 mt-1 mr-3"></i>
+                                    <span>Save or print this summary for future reference</span>
+                                </li>
+                                <li class="flex items-start">
+                                    <i class="fas fa-check-circle text-coral-500 mt-1 mr-3"></i>
+                                    <span>Create an action plan to move toward your Ikigai</span>
+                                </li>
+                                <li class="flex items-start">
+                                    <i class="fas fa-check-circle text-coral-500 mt-1 mr-3"></i>
+                                    <span>Revisit and refine your Ikigai as you grow and evolve</span>
+                                </li>
+                                <li class="flex items-start">
+                                    <i class="fas fa-check-circle text-coral-500 mt-1 mr-3"></i>
+                                    <span>Share your discoveries with trusted friends or mentors</span>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <!-- Action Buttons -->
+                    <div class="flex flex-col sm:flex-row gap-4 justify-center mt-8">
+                        <button class="bg-coral-500 hover:bg-coral-400 text-white px-8 py-3 rounded-lg font-medium transition-colors shadow-lg"
+                                data-event="click:exportJourney">
+                            <i class="fas fa-download mr-2"></i>
+                            Export My Journey
+                        </button>
+                        <button class="bg-sage-500 hover:bg-sage-400 text-white px-8 py-3 rounded-lg font-medium transition-colors shadow-lg"
+                                data-event="click:startOver">
+                            <i class="fas fa-redo mr-2"></i>
+                            Start New Journey
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <!-- Footer -->
+        <footer class="bg-cream-100 border-t border-cream-200 mt-16">
+            <div class="max-w-4xl mx-auto px-4 py-8 text-center">
+                <p class="text-earth-600 text-sm">
+                    Inspired by the framework from 
+                    <a href="https://notesbythalia.com/how-to-find-your-ikigai/" target="_blank" class="text-coral-600 hover:text-coral-500 font-medium">
+                        Notes by Thalia
+                    </a>
+                </p>
+                <p class="text-earth-500 text-xs mt-2">
+                    Remember: Your Ikigai may evolve as you grow. This is completely natural and encouraged.
+                </p>
+            </div>
+        </footer>
+    </div>
+    <!-- @END_COMPONENT: IkigaiJournal -->
+
+    <script>
+        // TODO: Implement business logic, API calls, and state management
+        (function() {
+            // Initialize app state
+            let currentStep = 0;
+            let responses = {
+                step1: {
+                    prompt1: '',
+                    prompt2: '',
+                    prompt3: '',
+                    prompt4: '',
+                    prompt5: ''
+                },
+                step2: {
+                    prompt1: '',
+                    prompt2: '',
+                    prompt3: '',
+                    prompt4: '',
+                    prompt5: ''
+                },
+                step3: {
+                    prompt1: '',
+                    prompt2: '',
+                    prompt3: '',
+                    prompt4: '',
+                    prompt5: ''
+                },
+                step4: {
+                    prompt1: '',
+                    prompt2: '',
+                    prompt3: '',
+                    prompt4: '',
+                    prompt5: ''
+                },
+                step5: {
+                    ikigai: ''
+                }
+            };
+
+            // Load saved data from localStorage
+            function loadProgress() {
+                const saved = localStorage.getItem('ikigai-journal');
+                if (saved) {
+                    try {
+                        const data = JSON.parse(saved);
+                        responses = data.responses || responses;
+                        currentStep = data.currentStep || 0;
+                    } catch (e) {
+                        console.error('Error loading saved progress:', e);
+                    }
+                }
+            }
+
+            // Save progress to localStorage
+            function saveProgress() {
+                try {
+                    localStorage.setItem('ikigai-journal', JSON.stringify({
+                        responses,
+                        currentStep
+                    }));
+                } catch (e) {
+                    console.error('Error saving progress:', e);
+                }
+            }
+
+            // Update progress bar
+            function updateProgress() {
+                const progressBar = document.querySelector('[data-bind="(currentStep / totalSteps) * 100%"]');
+                const stepDisplay = document.querySelector('[data-bind="currentStep"]');
+                
+                if (progressBar) {
+                    progressBar.style.width = `${(currentStep / 5) * 100}%`;
+                }
+                if (stepDisplay) {
+                    stepDisplay.textContent = Math.max(1, currentStep);
+                }
+            }
+
+            // Show specific screen
+            function showScreen(screenId) {
+                // Hide all screens
+                document.querySelectorAll('#welcome-screen, #step-1, #step-2, #step-3, #step-4, #step-5, #summary-screen').forEach(screen => {
+                    screen.classList.add('hidden');
+                });
+                
+                // Show target screen
+                const targetScreen = document.getElementById(screenId);
+                if (targetScreen) {
+                    targetScreen.classList.remove('hidden');
+                }
+            }
+
+            // Navigate to step
+            function goToStep(step) {
+                currentStep = step;
+                updateProgress();
+                saveProgress();
+                
+                if (step === 0) {
+                    showScreen('welcome-screen');
+                } else if (step <= 5) {
+                    showScreen(`step-${step}`);
+                } else {
+                    showScreen('summary-screen');
+                    generateSummary();
+                }
+            }
+
+            // Generate summary
+            function generateSummary() {
+                // This would compile all responses into a readable summary
+                // For demo purposes, showing placeholder
+                const summaryElements = document.querySelectorAll('[data-bind^="summaryData"]');
+                summaryElements.forEach(el => {
+                    el.textContent = 'Your thoughtful responses will be summarized here...';
+                });
+            }
+
+            // Event handlers
+            function initEventHandlers() {
+                // Start journey
+                document.addEventListener('click', (e) => {
+                    if (e.target.closest('[data-event="click:startJourney"]')) {
+                        goToStep(1);
+                    }
+                    
+                    if (e.target.closest('[data-event="click:goToWelcome"]')) {
+                        goToStep(0);
+                    }
+                    
+                    if (e.target.closest('[data-event="click:nextStep"]')) {
+                        goToStep(currentStep + 1);
+                    }
+                    
+                    if (e.target.closest('[data-event="click:previousStep"]')) {
+                        goToStep(Math.max(1, currentStep - 1));
+                    }
+                    
+                    if (e.target.closest('[data-event="click:completeJourney"]')) {
+                        goToStep(6); // Summary screen
+                    }
+                    
+                    if (e.target.closest('[data-event="click:startOver"]')) {
+                        if (confirm('Are you sure you want to start over? This will clear all your responses.')) {
+                            localStorage.removeItem('ikigai-journal');
+                            location.reload();
+                        }
+                    }
+                    
+                    if (e.target.closest('[data-event="click:exportJourney"]')) {
+                        // Implementation for exporting/printing journey
+                        window.print();
+                    }
+                });
+
+                // Auto-save responses
+                document.addEventListener('input', (e) => {
+                    if (e.target.tagName === 'TEXTAREA') {
+                        saveProgress();
+                    }
+                });
+            }
+
+            // Initialize the application
+            function init() {
+                loadProgress();
+                updateProgress();
+                initEventHandlers();
+                
+                // Start with welcome screen
+                showScreen('welcome-screen');
+            }
+
+            // Start the app when DOM is ready
+            if (document.readyState === 'loading') {
+                document.addEventListener('DOMContentLoaded', init);
+            } else {
+                init();
+            }
+        })();
+    </script>
+</body>
+</html>
